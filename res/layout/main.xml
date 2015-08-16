@@ -1,0 +1,61 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             xmlns:sec="http://schemas.android.com/apk/res-auto"
+             android:id="@+id/container"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:background="@drawable/community_bg"
+             tools:context="cn.com.mh.example.polygon"
+             tools:ignore="MergeRootFrame">
+
+
+    <com.hu.widget.CircleMenuLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/id_circle_menu_item_center"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/sp_30"
+                android:text="@string/center"
+                android:gravity="center"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"/>
+
+        <com.hu.widget.HexagonView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/hexagon_hello"
+                sec:text="@string/hello"
+                sec:backColor="@android:color/holo_orange_light"/>
+
+        <com.hu.widget.HexagonView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/hexagon_car"
+                sec:src="@drawable/home_car"/>
+
+        <com.hu.widget.HexagonView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/three"/>
+
+        <com.hu.widget.HexagonView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/four"/>
+
+        <com.hu.widget.HexagonView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/five"/>
+
+        <com.hu.widget.HexagonView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/six"/>
+
+
+    </com.hu.widget.CircleMenuLayout>
+</FrameLayout>
