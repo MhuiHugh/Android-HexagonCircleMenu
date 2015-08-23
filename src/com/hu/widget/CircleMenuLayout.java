@@ -124,9 +124,7 @@ public class CircleMenuLayout extends ViewGroup
 			// 如果都设置为精确值，则直接取小值；
 			resWidth = resHeight = Math.min(width, height);
 		}
-
 		setMeasuredDimension(resWidth, resHeight);
-
 		// 获得直径
 		mRadius = Math.max(getMeasuredWidth(), getMeasuredHeight());
 		// menu item数量
@@ -176,20 +174,15 @@ public class CircleMenuLayout extends ViewGroup
 		for (int i = 0; i < childCount; i++)
 		{
 			final View child = getChildAt(i);
-
 			if (child.getId() == R.id.id_circle_menu_item_center)
 				continue;
-
 			if (child.getVisibility() == GONE)
 			{
 				continue;
 			}
-
 			mStartAngle %= 360;
-
 			// 计算，中心点到menu item中心的距离
 			float tmp = layoutRadius / 2f - cWidth / 2 - mPadding;
-
 			// tmp cosa 即menu item中心点的横坐标
 			left = layoutRadius
 					/ 2
@@ -307,7 +300,6 @@ public class CircleMenuLayout extends ViewGroup
 			{
 				// post一个任务，去自动滚动
 				post(mFlingRunnable = new AutoFlingRunnable(anglePerSecond));
-
 				return false;
 			}
 
