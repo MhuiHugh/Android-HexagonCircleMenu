@@ -296,6 +296,10 @@ public class CircleMenuLayout extends ViewGroup {
                     // post一个任务，去自动滚动
                     post(mFlingRunnable = new AutoFlingRunnable(anglePerSecond));
                     return false;
+                }else{
+                    correctPosition();
+                    // 重新布局
+                    requestLayout();
                 }
 
                 // 如果当前旋转角度超过NOCLICK_VALUE屏蔽点击
@@ -446,8 +450,8 @@ public class CircleMenuLayout extends ViewGroup {
 
         for(int i=0;i<6;i++){
             if(Math.abs(mStartAngle-last)<min){
-              min=(float)Math.abs(mStartAngle-last);
-              value=last;
+                min=(float)Math.abs(mStartAngle-last);
+                value=last;
             }
             last=last+60;
         }
