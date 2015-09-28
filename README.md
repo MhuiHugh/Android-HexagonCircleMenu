@@ -1,4 +1,6 @@
 # Android-HexagonCircleMenu
 Android旋转的六边形菜单
-Demo APK https://github.com/MhuiHugh/Resource/blob/master/Demo/Android-HexagonCircleMenu-0.0.2-20150928.apk
-https://github.com/MhuiHugh/Resource/blob/master/Imags/Android-HexagonCircleMenu-Demo.gif
+效果图:
+ ![image](https://github.com/MhuiHugh/Resource/blob/master/Imags/Android-HexagonCircleMenu-Demo.gif)
+
+ apk 下载地址https://github.com/MhuiHugh/Resource/blob/master/Demo/Android-HexagonCircleMenu-0.0.2-20150928.apk
