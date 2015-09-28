@@ -12,15 +12,12 @@ import com.hu.hexagoncirclemenu.R;
 
 
 /**
- * <pre>
- *
  * @author zhy
- *         http://blog.csdn.net/lmj623565791/article/details/43131133
- *         </pre>
+ *   http://blog.csdn.net/lmj623565791/article/details/43131133
  */
 public class CircleMenuLayout extends ViewGroup {
 
-    private final String TAG = "CircleMenuLayout";
+    private final String TAG = this.getClass().getSimpleName();
 
     private int mRadius;//视图直径
     /**
@@ -173,7 +170,6 @@ public class CircleMenuLayout extends ViewGroup {
                 continue;
             }
             mStartAngle %= 360;
-            Log.v(TAG, "mStartAngle:" + mStartAngle);
             // 计算，中心点到menu item中心的距离
             float tmp = layoutRadius / 2f - cWidth / 2 - mPadding;
             // tmp cosa 即menu item中心点的横坐标
@@ -214,13 +210,13 @@ public class CircleMenuLayout extends ViewGroup {
      */
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
-        Log.v(TAG, "dispatchTouchEvent()");
+//        Log.v(TAG, "dispatchTouchEvent()");
         float x = event.getX();
         float y = event.getY();
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-
+                Log.v(TAG,"dispatchTouch down");
                 mLastX = x;
                 mLastY = y;
                 mDownTime = System.currentTimeMillis();
@@ -236,6 +232,7 @@ public class CircleMenuLayout extends ViewGroup {
 
                 break;
             case MotionEvent.ACTION_MOVE:
+                Log.v(TAG,"dispatchTouch move");
                 //判断是否在圆环内滑动
                 float a = Math.abs(x - mRadius / 2);
                 float b = Math.abs(y - mRadius / 2);
@@ -245,7 +242,7 @@ public class CircleMenuLayout extends ViewGroup {
                 float d = (float) Math.sqrt(2 * (mRadius * RADIO_DEFAULT_CHILD_DIMENSION));
                 //圆环内滑动判断
                 if (c > mRadius / 2 || c < d) {
-                    Log.v(TAG, "未在圆环内！");
+                 //Log.v(TAG, "未在圆环内！");
                     return true;
                 }
 
@@ -256,6 +253,8 @@ public class CircleMenuLayout extends ViewGroup {
                     if (Math.sqrt(g * g + h * h) > Math.abs(mRadius / 16)) {
                         isFirstMove = false;
                         return true;
+                    }else{
+                        return  false;
                     }
                 }
                 /**
@@ -266,8 +265,6 @@ public class CircleMenuLayout extends ViewGroup {
                  * 获得当前的角度
                  */
                 float end = getAngle(x, y);
-
-                // Log.e("TAG", "start = " + start + " , end =" + end);
                 // 如果是一、四象限，则直接end-start，角度值都是正值
                 if (getQuadrant(x, y) == 1 || getQuadrant(x, y) == 4) {
                     mStartAngle += end - start;
@@ -281,11 +278,11 @@ public class CircleMenuLayout extends ViewGroup {
 
                 // 重新布局
                 requestLayout();
-
                 mLastX = x;
                 mLastY = y;
                 break;
             case MotionEvent.ACTION_UP:
+                Log.v(TAG,"dispatchTouch up");
                 isFirstMove = true;
                 // 计算，每秒移动的角度
                 float anglePerSecond = mTmpAngle * 1000
@@ -298,7 +295,6 @@ public class CircleMenuLayout extends ViewGroup {
                     return false;
                 }else{
                     correctPosition();
-                    // 重新布局
                     requestLayout();
                 }
 
@@ -318,16 +314,38 @@ public class CircleMenuLayout extends ViewGroup {
      * @return
      */
     public boolean onInterceptTouchEvent(MotionEvent event) {
+        switch (event.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                Log.v(TAG,"onIntercept down");
+                break;
+            case MotionEvent.ACTION_MOVE:
+                Log.v(TAG,"onIntercept move");
+                break;
+            case MotionEvent.ACTION_UP:
+                Log.v(TAG,"onIntercept up");
+                break;
+        }
         return super.onInterceptTouchEvent(event);
     }
 
-//	/**
-//	 * Touch事件监听
-//	 */
-//	@Override
-//	public boolean onTouchEvent(MotionEvent event){
-//		return false;
-//	}
+	/**
+	 * Touch事件监听
+	 */
+	@Override
+	public boolean onTouchEvent(MotionEvent event){
+        switch(event.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                Log.v(TAG,"touch down");
+                break;
+            case MotionEvent.ACTION_MOVE:
+                Log.v(TAG,"touch move");
+                break;
+            case MotionEvent.ACTION_UP:
+                Log.v(TAG,"touch up");
+                break;
+        }
+		return super.onTouchEvent(event);
+	}
 
     /**
      * 根据触摸的位置，计算角度
@@ -408,7 +426,6 @@ public class CircleMenuLayout extends ViewGroup {
         public void run() {
             // 如果小于20,则停止
             if ((int) Math.abs(angelPerSecond) < 20) {
-                Log.v(TAG, "A:" + mStartAngle + "--" + angleDelay);
                 if (mStartAngle%30 == 0) {
                     isFling = false;
                     return;
@@ -429,9 +446,12 @@ public class CircleMenuLayout extends ViewGroup {
     }
 
     /**
+     * @author MhuiHugh
      * 视图位置校准
      */
     private void correctPosition() {
+        //修复mStartAngle>360时位置矫正异常bug
+        mStartAngle %= 360;
         //------------算法一,顶部2个六边形平行
 //        int temp=-1;
 //        float last=-1;
@@ -444,18 +464,17 @@ public class CircleMenuLayout extends ViewGroup {
 //         }
 //        mStartAngle=temp*angleDelay;
         //----------------算法二,顶部1个六边形
-        int last=30;
-        int value=-1;
+        int last=0;
         float min=360;
-
+        int point[]={30,90,150,210,270,330};
         for(int i=0;i<6;i++){
-            if(Math.abs(mStartAngle-last)<min){
-                min=(float)Math.abs(mStartAngle-last);
-                value=last;
+            float temp=(float)Math.abs(mStartAngle-point[i]);
+            if(temp<min){
+                min=temp;
+                last=i;
             }
-            last=last+60;
         }
-        mStartAngle=value;
+        mStartAngle=point[last];
     }
 
 }

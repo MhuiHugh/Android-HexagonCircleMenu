@@ -94,6 +94,11 @@ public class HexagonView extends View {
         endAnimation.setFillAfter(true);
     }
 
+    @Override
+    public void setOnTouchListener(OnTouchListener l) {
+        super.setOnTouchListener(l);
+    }
+
     /**
      * 绘画
      */
@@ -296,15 +301,16 @@ public class HexagonView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        Log.i(TAG,"onTouchEvent");
+//        Log.i(TAG,"onTouchEvent");
         // 事件处理
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                Log.v(TAG,"ACTION_DOWN");
                 // 判断是否点中
                 if (lasso.contains(event.getX(), event.getY())) {
                     islasso = true;
                 } else {
-                    Log.v(TAG, "未点中多边形！");
+//                    Log.v(TAG, "未点中多边形！");
                     islasso = false;
                 }
                 if (islasso) {
@@ -312,15 +318,26 @@ public class HexagonView extends View {
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
+                Log.v(TAG,"ACTION_MOVE");
                 // 判断是否滑出
                 if (lasso.contains(event.getX(), event.getY())) {
                     islasso = true;
                 } else {
-                    Log.v(TAG, "未点中多边形！");
+//                    Log.v(TAG, "未点中多边形！");
                     islasso = false;
                 }
                 break;
+            case MotionEvent.ACTION_HOVER_EXIT:
+                Log.v(TAG,"HOVER_EXIT");
+                break;
+            case MotionEvent.ACTION_CANCEL:
+                Log.v(TAG,"ACTION_CANCEL");
+                break;
+            case MotionEvent.ACTION_OUTSIDE:
+                Log.v(TAG,"ACTION_OUTSIDE");
+                break;
             case MotionEvent.ACTION_UP:
+                Log.v(TAG,"ACTION_UP");
                 if (islasso) {
                     if (listener != null) {
                         listener.onClick(this);
